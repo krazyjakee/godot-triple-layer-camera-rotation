@@ -54,7 +54,9 @@ offset_bottom = 40.0
 
 [node name="Skybox" type="SubViewport" parent="SubViewportContainer"]
 world_3d = SubResource("World3D_8dbl5")
+handle_input_locally = false
 size = Vector2i(1152, 648)
+render_target_update_mode = 4
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="SubViewportContainer/Skybox"]
 
@@ -64,7 +66,9 @@ size = Vector2i(1152, 648)
 own_world_3d = true
 world_3d = SubResource("World3D_h44gf")
 transparent_bg = true
+handle_input_locally = false
 size = Vector2i(1152, 648)
+render_target_update_mode = 4
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="SubViewportContainer/Space"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.534237, 0, -5.81265)
@@ -79,7 +83,9 @@ script = ExtResource("2_nxvwj")
 [node name="Spaceship" type="SubViewport" parent="SubViewportContainer"]
 world_3d = SubResource("World3D_oodwo")
 transparent_bg = true
+handle_input_locally = false
 size = Vector2i(1152, 648)
+render_target_update_mode = 4
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="SubViewportContainer/Spaceship"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05801, 0)

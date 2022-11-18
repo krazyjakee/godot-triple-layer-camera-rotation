@@ -4,7 +4,9 @@ extends CharacterBody3D
 @export var mouse_axis = Vector2.ZERO
 @export var roll_rotation = 0.0
 @onready var viewport_container = get_tree().root.get_node("Node3D/SubViewportContainer")
+@onready var outside_camera_3d: Camera3D = get_node("Camera3D")
 @onready var distant_camera: CharacterBody3D = viewport_container.get_node("Skybox/CharacterBody3D")
+@onready var distant_camera_3d: Camera3D = distant_camera.get_node("Camera3D")
 @onready var gui = get_tree().root.get_node("Node3D/CanvasLayer")
 
 const SPEED = 0.3
@@ -24,10 +26,10 @@ func _process(delta):
     if Input.is_action_pressed("pilot_roll_left"): roll_rotation = ACCELERATION
     if Input.is_action_pressed("pilot_roll_right"): roll_rotation = -ACCELERATION
     
-    rotate_object_local(Vector3(1, 0, 0), -mouse_axis.x * delta)
+    outside_camera_3d.rotate_object_local(Vector3(1, 0, 0), -mouse_axis.x * delta)
     rotate_object_local(Vector3(0, 1, 0), -mouse_axis.y * delta)
     rotate_object_local(Vector3(0, 0, 1), roll_rotation * delta)
-    distant_camera.rotate_object_local(Vector3(1, 0, 0), -mouse_axis.x * delta)
+    distant_camera_3d.rotate_object_local(Vector3(1, 0, 0), -mouse_axis.x * delta)
     distant_camera.rotate_object_local(Vector3(0, 1, 0), -mouse_axis.y * delta)
     distant_camera.rotate_object_local(Vector3(0, 0, 1), roll_rotation * delta)
     
