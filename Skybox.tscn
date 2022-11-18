@@ -1,0 +1,128 @@
+[gd_scene load_steps=18 format=3 uid="uid://kmpmc1bfyjlf"]
+
+[ext_resource type="Texture2D" uid="uid://dhnw7i7y1pkvu" path="res://assets/skybox.webp" id="1_ujrhw"]
+[ext_resource type="Script" path="res://CharacterBody3D.gd" id="2_3vbfb"]
+[ext_resource type="Script" path="res://PilotCamera.gd" id="2_nxvwj"]
+[ext_resource type="Script" path="res://GUI.gd" id="3_mkvfu"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_kg44f"]
+panorama = ExtResource("1_ujrhw")
+
+[sub_resource type="Sky" id="Sky_on3fo"]
+sky_material = SubResource("PanoramaSkyMaterial_kg44f")
+
+[sub_resource type="Environment" id="Environment_w0f73"]
+background_mode = 2
+sky = SubResource("Sky_on3fo")
+
+[sub_resource type="World3D" id="World3D_8dbl5"]
+environment = SubResource("Environment_w0f73")
+
+[sub_resource type="Environment" id="Environment_xdhh3"]
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+
+[sub_resource type="World3D" id="World3D_h44gf"]
+environment = SubResource("Environment_xdhh3")
+
+[sub_resource type="Gradient" id="Gradient_v1kjs"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rl01a"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_u2nu2"]
+color_ramp = SubResource("Gradient_v1kjs")
+noise = SubResource("FastNoiseLite_rl01a")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_keg7x"]
+metallic = 1.0
+metallic_texture = SubResource("NoiseTexture2D_u2nu2")
+
+[sub_resource type="Environment" id="Environment_4h24p"]
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+
+[sub_resource type="World3D" id="World3D_oodwo"]
+environment = SubResource("Environment_4h24p")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_k5vhy"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Skybox" type="SubViewport" parent="SubViewportContainer"]
+world_3d = SubResource("World3D_8dbl5")
+size = Vector2i(1152, 648)
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="SubViewportContainer/Skybox"]
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/Skybox/CharacterBody3D"]
+
+[node name="Space" type="SubViewport" parent="SubViewportContainer"]
+own_world_3d = true
+world_3d = SubResource("World3D_h44gf")
+transparent_bg = true
+size = Vector2i(1152, 648)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="SubViewportContainer/Space"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.534237, 0, -5.81265)
+radius = 1.27685
+material = SubResource("StandardMaterial3D_keg7x")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="SubViewportContainer/Space"]
+script = ExtResource("2_nxvwj")
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/Space/CharacterBody3D"]
+
+[node name="Spaceship" type="SubViewport" parent="SubViewportContainer"]
+world_3d = SubResource("World3D_oodwo")
+transparent_bg = true
+size = Vector2i(1152, 648)
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="SubViewportContainer/Spaceship"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05801, 0)
+script = ExtResource("2_3vbfb")
+
+[node name="Head" type="Node3D" parent="SubViewportContainer/Spaceship/CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.577298, 0)
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/Spaceship/CharacterBody3D/Head"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/Spaceship/CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_k5vhy")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="SubViewportContainer/Spaceship"]
+use_collision = true
+size = Vector3(2.66835, 0.0568255, 2.32135)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
+script = ExtResource("3_mkvfu")
+
+[node name="Quit" type="Button" parent="CanvasLayer"]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Quit"
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer2"]
+offset_left = 13.0
+offset_top = 4.0
+offset_right = 205.0
+offset_bottom = 30.0
+text = "Right click for Pilot Mode"
+
+[node name="Label2" type="Label" parent="CanvasLayer2"]
+offset_left = 8.0
+offset_top = 33.0
+offset_right = 450.0
+offset_bottom = 232.0
+text = "While not in pilot mode, rotate
+the mouse in circles and watch
+the 3 cameras rotate away from
+each other. Why is this?"
+
+[connection signal="pressed" from="CanvasLayer/Quit" to="CanvasLayer" method="_on_quit_pressed"]
