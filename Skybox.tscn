@@ -30,6 +30,7 @@ environment = SubResource("Environment_xdhh3")
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_rl01a"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_u2nu2"]
+seamless = true
 color_ramp = SubResource("Gradient_v1kjs")
 noise = SubResource("FastNoiseLite_rl01a")
 
@@ -72,7 +73,9 @@ render_target_update_mode = 4
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="SubViewportContainer/Space"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.534237, 0, -5.81265)
-radius = 1.27685
+radius = 1.303
+radial_segments = 18
+rings = 16
 material = SubResource("StandardMaterial3D_keg7x")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="SubViewportContainer/Space"]
@@ -120,15 +123,5 @@ offset_top = 4.0
 offset_right = 205.0
 offset_bottom = 30.0
 text = "Right click for Pilot Mode"
-
-[node name="Label2" type="Label" parent="CanvasLayer2"]
-offset_left = 8.0
-offset_top = 33.0
-offset_right = 450.0
-offset_bottom = 232.0
-text = "While not in pilot mode, rotate
-the mouse in circles and watch
-the 3 cameras rotate away from
-each other. Why is this?"
 
 [connection signal="pressed" from="CanvasLayer/Quit" to="CanvasLayer" method="_on_quit_pressed"]

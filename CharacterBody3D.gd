@@ -12,8 +12,9 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var head = get_node("Head")
 @onready var outside_camera = get_tree().root.get_node("Node3D/SubViewportContainer/Space/CharacterBody3D")
-@onready var outside_camera_3d = get_tree().root.get_node("Node3D/SubViewportContainer/Space/CharacterBody3D/Camera3D")
+@onready var outside_camera_3d = outside_camera.get_node("Camera3D")
 @onready var distant_camera = get_tree().root.get_node("Node3D/SubViewportContainer/Skybox/CharacterBody3D")
+@onready var distant_camera_3d = distant_camera.get_node("Camera3D")
 @onready var gui = get_tree().root.get_node("Node3D/CanvasLayer")
 @onready var hud = get_tree().root.get_node("Node3D/CanvasLayer2")
 @onready var pilot_label: Label = hud.get_node("Label")
@@ -50,7 +51,6 @@ func _physics_process(delta):
       velocity.y = JUMP_VELOCITY
 
     # Get the input direction and handle the movement/deceleration.
-    # As good practice, you should replace UI actions with custom gameplay actions.
     var input_dir = Input.get_vector("left", "right", "up", "down")
     var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
     if direction:
@@ -76,7 +76,7 @@ func rotate_cameras(delta: float):
   # Handle other cameras
   outside_camera_3d.rotate_object_local(Vector3(1, 0, 0), look_angle.x)
   outside_camera.rotate_object_local(Vector3(0, 1, 0), look_angle.y)
-  outside_camera_3d.rotate_object_local(Vector3(1, 0, 0), look_angle.x)
+  distant_camera_3d.rotate_object_local(Vector3(1, 0, 0), look_angle.x)
   distant_camera.rotate_object_local(Vector3(0, 1, 0), look_angle.y)
     
   mouse_rotation = Vector2.ZERO
